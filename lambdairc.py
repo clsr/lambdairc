@@ -168,17 +168,17 @@ client = type(
                 [_ for _ in ((lambda msg: iter('').next() if msg.cmd == '001' else ((setattr(self, 'work', False), setattr(self, 'last', msg), iter('').next()) if msg.cmd == '433' else None))(self.inqueue.get()) for i in xrange(10))],
                 (
                     [self.join(ch) for ch in self.channels],
-                ) if self.work else self.inqueue.put(self.last), self.inqueue.put(-1),
+                ) if self.work else self.inqueue.put(self.last), self.inqueue.put(-1), self.outqueue.put(-1), self.stop(),
             ))(__import__('threading'), __import__('socket'))
         ),
         'stop': lambda self: ( # should stop the read/write threads and disconnect
             setattr(self, 'work', False),
-            self.inthread.join() if self.inthread is not None and self.inthread.is_alive() else None,
-            self.outthread.join() if self.outthread is not None and self.outthread.is_alive() else None,
             (
-                self.sock.shutdown(),
+                self.sock.shutdown(__import__('socket').SHUT_RDWR),
                 self.sock.close(),
             ) if self.sock is not None else None,
+            self.inthread.join() if self.inthread is not None and self.inthread.is_alive() else None,
+            self.outthread.join() if self.outthread is not None and self.outthread.is_alive() else None,
             setattr(self, 'sock', None),
         ),
         'handle_ping': lambda self, client, msg: ( # respond to PINGs
