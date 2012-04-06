@@ -120,23 +120,22 @@ client = type(
         '__repr__': lambda self: (
             '<client %r:%r>' % (self.host, self.port)
         ),
-        '_iter': __import__('itertools').repeat(None),
         '_reader': lambda self: (
             (lambda f: (
-                [(self._handle(message(f.readline())), None)[-1] for _ in (_ if self.work else iter('').next() for _ in self._iter)],
+                [self._handle(message(line)) for line in f]
             ))(self.sock.makefile()),
             None,
         )[-1],
         '_writer': lambda self: (
             (lambda f: (
-                [(lambda msg: (
+                [(
                     f.write(str(msg)),
                     f.flush(),
                     setattr(msg, 'user', None),
                     self._handle(msg),
                     self.outqueue.task_done(),
                     None,
-                )[-1])(self.outqueue.get()) for _ in (_ if self.work else iter('').next() for _ in self._iter)],
+                )[-1] for msg in iter(self.outqueue.get, -1)]
             ))(self.sock.makefile()),
             None,
         )[-1],
