@@ -10,10 +10,5 @@ bot = lambdairc.client('irc.example.net')
 bot.handlers.add(greeter)
 bot.channels.add('#example')
 bot.start('example', 'example', 'example')
-if bot.work:
-    for msg in bot:
-        print msg,
-        if not bot.work:
-            break
-else: # nick taken
-    print bot.last,
+for msg in bot:
+    print msg,

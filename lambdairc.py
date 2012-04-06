@@ -168,7 +168,7 @@ client = type(
                 [_ for _ in ((lambda msg: iter('').next() if msg.cmd == '001' else ((setattr(self, 'work', False), setattr(self, 'last', msg), iter('').next()) if msg.cmd == '433' else None))(self.inqueue.get()) for i in xrange(10))],
                 (
                     [self.join(ch) for ch in self.channels],
-                ) if self.work else None,
+                ) if self.work else self.inqueue.put(self.last), self.inqueue.put(-1),
             ))(__import__('threading'), __import__('socket'))
         ),
         'stop': lambda self: ( # should stop the read/write threads and disconnect
