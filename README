@@ -1,0 +1,8 @@
+lambdairc.py -- simple IRC library written in Python
+
+This isn't meant to be used in serious projects, I was just experimenting with a different style of writting Python.
+It should mostly work, though. I think.
+
+Anyway, I wrote this without using any Python statements, such as class, def, if, while, for, ... (though I did use one assignment for each class). Instead, I used type, lambda, ternary if (a if b else c) and list comprehensions to put together this abomination. In the end, it's like some horrible offspring of Python and Lisp.
+
+I don't recommend using this style to anyone, because it's rather unreadable, unoptimal and unpythonic. Still, it was interesting to write.
