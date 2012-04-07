@@ -168,11 +168,13 @@ client = type(
                 [_ for _ in ((lambda msg: iter('').next() if msg.cmd == '001' else ((setattr(self, 'work', False), setattr(self, 'last', msg), iter('').next()) if msg.cmd == '433' else None))(self.inqueue.get()) for i in xrange(10))],
                 (
                     [self.join(ch) for ch in self.channels],
-                ) if self.work else self.inqueue.put(self.last), self.inqueue.put(-1), self.outqueue.put(-1), self.stop(),
+                ) if self.work else self.inqueue.put(self.last), self.stop(),
             ))(__import__('threading'), __import__('socket'))
         ),
         'stop': lambda self: ( # should stop the read/write threads and disconnect
             setattr(self, 'work', False),
+            self.inqueue.put(-1),
+            self.outqueue.put(-1), 
             (
                 self.sock.shutdown(__import__('socket').SHUT_RDWR),
                 self.sock.close(),
@@ -227,7 +229,7 @@ client = type(
             s is not None and len(s) > 0 and s[0] == '\001' and s[-1] == '\001'
         ),
         'split_ctcp': lambda self, s: (
-            s[1:-1].split(' ', 1)
+            s[1:-1].split(None, 1)
         ),
         'send': lambda self, msg: ( # sends a message or raw irc string
             self.outqueue.put(msg if isinstance(msg, message) else message(msg)),
