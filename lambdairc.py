@@ -208,8 +208,8 @@ client = type(
         ),
         'handle_invite': lambda self, client, msg: ( # automatically accepts invites
             (
-                client.join(msg)
-            ) if msg.cmd == 'INVITE' and msg.params and len(msg.params) == 2 and msg.params[0] == client.nick and msg.user else None
+                client.join(msg.msg)
+            ) if msg.cmd == 'INVITE' and msg.params and len(msg.params) == 1 and msg.params[0] == client.nick and msg.user else None
         ),
         'handle_nick': lambda self, client, msg: ( # keeps track of own nick changes
             (
