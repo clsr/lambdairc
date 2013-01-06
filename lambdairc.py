@@ -180,7 +180,7 @@ client = type(
                 setattr(self, 'work', False),
                 self.inqueue.put(-1),
                 self.outqueue.put(-1), 
-            ) if getattr(self, 'work', False) else None
+            ) if getattr(self, 'work', False) else None,
             (
                 self.sock.shutdown(__import__('socket').SHUT_RDWR),
                 self.sock.close(),
