@@ -1,5 +1,5 @@
 # lambdairc.py: a Python IRC library full of lambdas and braces
-# Author: mcef@discordiae.com
+# Author: mceferin@gmail.com
 # License: GNU GPL v2 or later <https://www.gnu.org/licenses/gpl-2.0.html>
 # Length: 3 logical lines of code
 
@@ -185,8 +185,8 @@ client = type(
                 self.sock.shutdown(__import__('socket').SHUT_RDWR),
                 self.sock.close(),
             ) if self.sock is not None else None,
-            self.inthread.join() if self.inthread is not None and self.inthread.is_alive() else None,
-            self.outthread.join() if self.outthread is not None and self.outthread.is_alive() else None,
+            self.inthread.join(5) if self.inthread is not None and self.inthread.is_alive() else None,
+            self.outthread.join(5) if self.outthread is not None and self.outthread.is_alive() else None,
             setattr(self, 'sock', None),
         ),
         'handle_ping': lambda self, client, msg: ( # respond to PINGs
