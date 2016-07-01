@@ -1,6 +1,8 @@
+# This software is released into the public domain worldwide.
+# It is provided "as is", without warranties or conditions of any kind.
+# Anyone is free to modify, redistribute and do anything with this software.
+
 # lambdairc.py: a Python IRC library full of lambdas and braces
-# Author: mceferin@gmail.com
-# License: GNU GPL v2 or later <https://www.gnu.org/licenses/gpl-2.0.html>
 # Length: 3 logical lines of code
 
 user = type( # represents IRC user; constructed from source part of raw message (if only one param), otherwise from str, bool, str, str
